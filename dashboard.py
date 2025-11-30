@@ -74,7 +74,7 @@ if df is not None:
                 "Rating vs. Category",
                 "Popularity Head/Tail",
                 "Category Breakdown",
-                "Word Clouds",
+                #"Word Clouds",
                 "Review Length vs. Rating",
                 "Sentiment Polarity vs. Rating",
                 "Correlation Heatmap",
@@ -84,6 +84,7 @@ if df is not None:
                 "Rating Distribution (Bar Chart)",
                 "Top Categories (Horizontal Bar Chart)",
                 "Fit Distribution (Donut Chart)",
+                "Hips vs. Waist Scatter Plot",
                 "Parallel Categories Diagram",
                 "Category Treemap",
                 "Quality Violin Plot",
@@ -151,4 +152,156 @@ if df is not None:
         st.subheader("Bra Size Distribution")
         fig_body_size = pf.plot_bra_size_heatmap(df)
         st.plotly_chart(fig_body_size, use_container_width=True)
+
+    # 6 Shoe Size Distribution Page
+    elif page == "Shoe Size Distribution":
+        st.title("Shoe Size Distribution") 
+        st.subheader("Shoe Size Distribution")
+        fig_body_size = pf.plot_shoe_size_distribution(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    # 7 Body Shape Clustering Page
+    elif page == "Body Shape Clustering":   
+        st.title("Body Shape Clustering") 
+        st.subheader("Body Shape Clustering")
+        fig_body_size = pf.plot_body_shape_clustering(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #8 Rating vs. Category Page
+    elif page == "Rating vs. Category":
+        st.title("Rating vs. Category") 
+        st.subheader("Rating vs. Category")
+        fig_body_size = pf.plot_rating_vs_category(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #9 Popularity Head/Tail Page
+    elif page == "Popularity Head/Tail":
+        st.title("Popularity Head/Tail") 
+        st.subheader("Popularity Head/Tail")
+        fig_body_size = pf.plot_popularity_head_tail(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #10 Category Breakdown Page
+    elif page == "Category Breakdown":
+        st.title("Category Breakdown") 
+        st.subheader("Category Breakdown")
+        fig_body_size = pf.plot_category_breakdown(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #11 Word Clouds Page
+    elif page == "Word Clouds":
+        st.title("Word Clouds") 
+        st.subheader("Word Clouds")
+        pf.plot_wordclouds(df)
+    #12 Review Length vs. Rating Page
+    elif page == "Review Length vs. Rating":
+        st.title("Review Length vs. Rating") 
+        st.subheader("Review Length vs. Rating")
+        fig_body_size = pf.plot_review_length_vs_rating(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #13 Sentiment Polarity vs. Rating Page
+    elif page == "Sentiment Polarity vs. Rating":
+        st.title("Sentiment Polarity vs. Rating") 
+        st.subheader("Sentiment Polarity vs. Rating")
+        fig_body_size = pf.plot_sentiment_polarity(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #14 Correlation Heatmap Page
+    elif page == "Correlation Heatmap":
+        st.title("Correlation Heatmap") 
+        st.subheader("Correlation Heatmap")
+        fig_body_size = pf.plot_correlation_heatmap(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #15 Does It Fit? Category Heatmap Page
+    elif page == "Does It Fit? Category Heatmap":
+        st.title("Does It Fit? Category Heatmap") 
+        st.subheader("Does It Fit? Category Heatmap")
+        fig_body_size = pf.plot_fit_category_heatmap(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #16 Height vs. Length Boxplot Page
+    elif page == "Height vs. Length Boxplot":
+        st.title("Height vs. Length Boxplot") 
+        st.subheader("Height vs. Length Boxplot")
+        fig_body_size = pf.plot_height_length_boxplot(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #17 Rating Distribution Histogram Page
+    elif page == "Rating Distribution Histogram":
+        st.title("Rating Distribution Histogram") 
+        st.subheader("Rating Distribution Histogram")
+        fig_body_size = pf.plot_rating_distribution_histogram(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #18 Rating Distribution (Bar Chart) Page
+    elif page == "Rating Distribution (Bar Chart)":
+        st.title("Rating Distribution (Bar Chart)") 
+        st.subheader("Rating Distribution (Bar Chart)")
+        fig_body_size = pf.plot_rating_distribution(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #19 Top Categories (Horizontal Bar Chart) Page
+    elif page == "Top Categories (Horizontal Bar Chart)":
+        st.title("Top Categories (Horizontal Bar Chart)") 
+        st.subheader("Top Categories (Horizontal Bar Chart)")
+        fig_body_size = pf.plot_top_categories(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #20 Fit Distribution (Donut Chart) Page
+    elif page == "Fit Distribution (Donut Chart)":
+        st.title("Fit Distribution (Donut Chart)") 
+        st.subheader("Fit Distribution (Donut Chart)")
+        fig_body_size = pf.plot_fit_distribution(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #21 Hips vs. Waist Scatter Plot Page
+    elif page == "Hips vs. Waist Scatter Plot":
+        st.title("Hips vs. Waist Scatter Plot") 
+        st.subheader("Hips vs. Waist Scatter Plot")
+        fig_body_size = pf.plot_body_measurements(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)    
+    #22 Parallel Categories Diagram Page
+    elif page == "Parallel Categories Diagram":
+        st.title("Parallel Categories Diagram") 
+        st.subheader("Parallel Categories Diagram")
+        fig_body_size = pf.plot_parallel_categories(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #23 Category Treemap Page
+    elif page == "Category Treemap":
+        st.title("Category Treemap") 
+        st.subheader("Category Treemap")
+        fig_body_size = pf.plot_category_treemap(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #24 Quality Violin Plot Page
+    elif page == "Quality Violin Plot":
+        st.title("Quality Violin Plot") 
+        st.subheader("Quality Violin Plot")
+        fig_body_size = pf.plot_quality_violin(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #25 Body Shape Analyzer (Interactive Histogram) Page
+    elif page == "Body Shape Analyzer (Interactive Histogram)":
+        st.title("Body Shape Analyzer (Interactive Histogram)") 
+        st.subheader("Body Shape Analyzer (Interactive Histogram)")
+        fig_body_size = pf.plot_body_shape_analyzer(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #26 Fit by Category (100% Stacked Horizontal Bar) Page
+    elif page == "Fit by Category (100% Stacked Horizontal Bar)":
+        st.title("Fit by Category (100% Stacked Horizontal Bar)") 
+        st.subheader("Fit by Category (100% Stacked Horizontal Bar)")
+        fig_body_size = pf.plot_quality_popularity_matrix(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #27 Quality vs. Popularity Matrix (Bubble Chart) Page
+    elif page == "Quality vs. Popularity Matrix (Bubble Chart)":
+        st.title("Quality vs. Popularity Matrix (Bubble Chart)") 
+        st.subheader("Quality vs. Popularity Matrix (Bubble Chart)")
+        fig_body_size = pf.plot_sizing_consistency(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #28 Sizing Consistency (Strip Plot) Page
+    elif page == "Sizing Consistency (Strip Plot)":
+        st.title("Sizing Consistency (Strip Plot)") 
+        st.subheader("Sizing Consistency (Strip Plot)")
+        fig_body_size = pf.plot_treemap_review(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #29 Treemap Adjectives (Voice of Customer) Page
+    elif page == "Treemap Adjectives (Voice of Customer)":  
+        st.title("Treemap Adjectives (Voice of Customer)") 
+        st.subheader("Treemap Adjectives (Voice of Customer)")
+        fig_body_size = pf.plot_treemap_review(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+    #30 Sparsity Heatmap (Collaborative Filtering) Page
+    elif page == "Sparsity Heatmap (Collaborative Filtering)":
+        st.title("Sparsity Heatmap (Collaborative Filtering)") 
+        st.subheader("Sparsity Heatmap (Collaborative Filtering)")
+        fig_body_size = pf.plot_sparsity_heatmap(df)
+        st.plotly_chart(fig_body_size, use_container_width=True)
+else:
+    st.error("Failed to load the dataset. Please check the data source.")
 
