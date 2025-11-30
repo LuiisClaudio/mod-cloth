@@ -69,7 +69,9 @@ if df is not None:
     # Grouped navigation
     menu_options = {
         "📈 Overview": [
-            "KPI Cards"
+            "KPI Cards",
+            "Statistical Summary",
+            "Correlation Heatmap"
         ],
         "👗 Fit & Sizing": [
             "Fit Distribution by Category",
@@ -104,7 +106,6 @@ if df is not None:
             "Quality vs. Popularity Matrix (Bubble Chart)"
         ],
         "🔍 Advanced Analytics": [
-            "Correlation Heatmap",
             "Parallel Categories Diagram",
             "Treemap Adjectives (Voice of Customer)",
             "Sparsity Heatmap (Collaborative Filtering)"
@@ -147,6 +148,18 @@ if df is not None:
         col2.metric("Unique Products", total_products)
         col3.metric("Unique Users", total_users)
         col4.metric("Average Rating", f"{avg_rating:.2f}")
+
+    # Statistical Summary Page
+    elif page == "Statistical Summary":
+        st.title("📈 Statistical Summary")
+        fig_stats = pf.plot_statistical_summary(df)
+        st.plotly_chart(fig_stats, use_container_width=True)
+
+    # Correlation Heatmap Page (moved to Overview)
+    elif page == "Correlation Heatmap":
+        st.title("📈 Correlation Heatmap")
+        fig_corr = pf.plot_correlation_heatmap(df)
+        st.plotly_chart(fig_corr, use_container_width=True)
 
     # 2 Fit Analysis Page 
     elif page == "Fit Distribution by Category":
@@ -207,11 +220,6 @@ if df is not None:
     elif page == "Sentiment Polarity vs. Rating":
         st.title("⭐ Sentiment Polarity vs. Rating") 
         fig_body_size = pf.plot_sentiment_polarity(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-    #14 Correlation Heatmap Page
-    elif page == "Correlation Heatmap":
-        st.title("🔍 Correlation Heatmap") 
-        fig_body_size = pf.plot_correlation_heatmap(df)
         st.plotly_chart(fig_body_size, use_container_width=True)
     #15 Does It Fit? Category Heatmap Page
     elif page == "Does It Fit? Category Heatmap":

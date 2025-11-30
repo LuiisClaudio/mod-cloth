@@ -5,7 +5,58 @@ import matplotlib.pyplot as plt
 from plotly.subplots import make_subplots
 from sklearn.feature_extraction.text import CountVectorizer
 import re
+import ipywidgets as widgets
+from IPython.display import display
 
+
+# 1. KPI Cards
+def show_kpi_cards(df, category_filter='all'):
+    if category_filter == 'all':
+        df = df
+    else:
+        df = df[df['category'] == category_filter]
+    total_reviews = len(df)
+    total_products = df['item_id'].nunique()
+    total_users = df['user_id'].nunique()
+    avg_rating = df['rating'].mean()
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Indicator(
+        mode="number",
+        value=total_reviews,
+        title={"text": "Total Reviews"},
+        domain={'row': 0, 'column': 0}
+    ))
+
+    fig.add_trace(go.Indicator(
+        mode="number",
+        value=total_products,
+        title={"text": "Unique Products"},
+        domain={'row': 0, 'column': 1}
+    ))
+
+    fig.add_trace(go.Indicator(
+        mode="number",
+        value=total_users,
+        title={"text": "Unique Users"},
+        domain={'row': 0, 'column': 2}
+    ))
+
+    fig.add_trace(go.Indicator(
+        mode="number",
+        value=avg_rating,
+        number={"valueformat": ".2f"},
+        title={"text": "Average Rating"},
+        domain={'row': 0, 'column': 3}
+    ))
+
+    fig.update_layout(
+        grid={'rows': 1, 'columns': 4, 'pattern': "independent"},
+        template="plotly_white",
+        height=200
+    )
+    return fig.show()
 # 2. Fit Distribution by Category (Stacked Bar Chart - Percentage)
 def plot_fit_distribution_by_category(df):
     """
@@ -93,7 +144,6 @@ def plot_body_measurement_vs_size(df):
     
     return fig
 
-
 # 4. Length Analysis by Height
 def plot_length_vs_height(df):
     """
@@ -139,7 +189,6 @@ def plot_length_vs_height(df):
     )
     
     return fig
-
 
 # 5. Bra Size Distribution
 def plot_bra_size_heatmap(df):
@@ -556,7 +605,6 @@ def generate_wordcloud_image(text, colormap='viridis'):
     img_str = base64.b64encode(buffer.read()).decode()
     return f"data:image/png;base64,{img_str}"
 
-
 def plot_wordclouds(df):
     """
     Creates two word clouds: one for 5-star reviews and one for 1-2 star reviews.
@@ -722,7 +770,7 @@ def plot_sentiment_polarity(df):
     return fig
 
 #14 Correlation Heatmap
-def plot_correlation_heatmap(df):
+def plot_correlation_heatmap_numerical(df):
     """
     Creates a correlation heatmap for numerical features.
     
@@ -1723,6 +1771,74 @@ def plot_sparsity_heatmap(df, user_col='user_id', item_col='item_id', rating_col
         xref="paper", yref="paper",
         x=0.5, y=-0.1, showarrow=False,
         font=dict(size=14)
+    )
+    
+    return fig
+
+#31. Statistical Summary Table
+def plot_statistical_summary(df):
+    """
+    Visualizes df.describe() as a polished Plotly table.
+    """
+    # 1. Calculate describe() and reset index to make 'count', 'mean', etc., a column
+    desc_df = df.describe().reset_index()
+    
+    # 2. Round numeric columns for readability
+    for col in desc_df.columns:
+        if col != 'index':
+            desc_df[col] = desc_df[col].apply(lambda x: f"{x:.2f}" if isinstance(x, (int, float)) else x)
+
+    # 3. Create the Table
+    fig = go.Figure(data=[go.Table(
+        header=dict(
+            values=['<b>Statistic</b>'] + [f'<b>{col.replace("_", " ").title()}</b>' for col in desc_df.columns if col != 'index'],
+            fill_color='teal',
+            align='left',
+            font=dict(color='white', size=14),
+            height=40
+        ),
+        cells=dict(
+            values=[desc_df['index']] + [desc_df[col] for col in desc_df.columns if col != 'index'],
+            fill_color='white',
+            align='left',
+            font=dict(color='black', size=12),
+            height=30,
+            line_color='lightgrey'
+        )
+    )])
+
+    fig.update_layout(
+        title_text="Dataset Statistical Summary (df.describe)",
+        title_font=dict(size=24),
+        height=400,
+        margin=dict(l=10, r=10, t=50, b=10)
+    )
+    return fig
+
+#32. Correlation Heatmap
+def plot_correlation_heatmap(df):
+    """
+    Visualizes the correlation matrix of numerical features.
+    """
+    # Select numerical columns of interest
+    cols = ['waist', 'hips', 'bra_size', 'size', 'rating', 'shoe_size']
+    
+    # Calculate correlation matrix
+    corr_matrix = df[cols].corr()
+    
+    fig = px.imshow(
+        corr_matrix,
+        text_auto='.2f', # Show values with 2 decimal places
+        aspect="auto",
+        color_continuous_scale='RdBu_r', # Red-Blue diverging scale
+        origin='lower',
+        title='Correlation Matrix: Relationships between Features'
+    )
+    
+    fig.update_layout(
+        title_font=dict(size=24),
+        width=700,
+        height=700
     )
     
     return fig
