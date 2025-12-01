@@ -92,7 +92,7 @@ if df is not None:
         ],
         "⭐ Ratings & Reviews": [
             "Rating vs. Category",
-            "Rating Distribution Histogram",
+            #"Rating Distribution Histogram",
             "Rating Distribution (Bar Chart)",
             "Quality Violin Plot",
             "Review Length vs. Rating",
@@ -107,8 +107,7 @@ if df is not None:
         ],
         "🔍 Advanced Analytics": [
             "Parallel Categories Diagram",
-            "Treemap Adjectives (Voice of Customer)",
-            "Sparsity Heatmap (Collaborative Filtering)"
+            "Treemap Adjectives (Voice of Customer)"
         ]
     }
     
@@ -224,7 +223,7 @@ if df is not None:
     #15 Does It Fit? Category Heatmap Page
     elif page == "Does It Fit? Category Heatmap":
         st.title("👗 Does It Fit? Category Heatmap") 
-        fig_body_size = pf.plot_fit_category_heatmap(df)
+        fig_body_size = pf.plot_fit_by_category(df)
         st.plotly_chart(fig_body_size, use_container_width=True)
     #16 Height vs. Length Boxplot Page
     elif page == "Height vs. Length Boxplot":
@@ -295,11 +294,6 @@ if df is not None:
     elif page == "Treemap Adjectives (Voice of Customer)":  
         st.title("🔍 Treemap Adjectives (Voice of Customer)") 
         fig_body_size = pf.plot_treemap_review(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-    #30 Sparsity Heatmap (Collaborative Filtering) Page
-    elif page == "Sparsity Heatmap (Collaborative Filtering)":
-        st.title("🔍 Sparsity Heatmap (Collaborative Filtering)") 
-        fig_body_size = pf.plot_sparsity_heatmap(df)
         st.plotly_chart(fig_body_size, use_container_width=True)
 else:
     st.error("Failed to load the dataset. Please check the data source.")

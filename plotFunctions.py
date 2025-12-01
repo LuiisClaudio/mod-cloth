@@ -1033,37 +1033,40 @@ def plot_rating_distribution(df):
     return fig
 
 #19. Top Categories Horizontal Bar Chart
-def plot_top_categories(df):
+def plot_top_categories(df, color_palette='Viridis'):
     """
     Creates a horizontal bar chart for the top 10 most reviewed categories.
-    
+
     Args:
         df (pd.DataFrame): DataFrame containing a 'category' column.
-        
+        color_palette (str): Name of the Plotly color palette to use.
+
     Returns:
         plotly.graph_objects.Figure: The horizontal bar chart.
     """
     # Aggregate data
     category_counts = df['category'].value_counts().nlargest(10).reset_index()
     category_counts.columns = ['category', 'count']
-    
+
     # Create horizontal bar chart
     fig = px.bar(
-        category_counts, 
-        x='count', 
+        category_counts,
+        x='count',
         y='category',
-        orientation='h', # Horizontal bars
+        orientation='h',
         title='Top 10 Most Reviewed Categories',
         labels={'count': 'Number of Reviews', 'category': 'Category'},
-        text='count'
+        text='count',
+        color='count',
+        color_continuous_scale=color_palette
     )
-    
+
     # Design updates: Large font for category names
     fig.update_layout(
         yaxis=dict(
-            autorange="reversed", # Top category at the top
+            autorange="reversed",
             title_font=dict(size=18),
-            tickfont=dict(size=16) # Large font for category names
+            tickfont=dict(size=16)
         ),
         xaxis=dict(
             title_font=dict(size=18),
@@ -1074,14 +1077,12 @@ def plot_top_categories(df):
             font_size=16
         )
     )
-    
-    fig.update_traces(
-        textposition='outside',
-        marker_color='teal' # Consistent color for categories
-    )
-    
-    return fig
 
+    fig.update_traces(
+        textposition='outside'
+    )
+
+    return fig
 #20. "Does It Fit?" Donut Chart
 def plot_fit_distribution(df):
     """
@@ -1711,71 +1712,7 @@ def plot_treemap_review(df):
 
     return fig
 
-#30. Sparsity Heatmap
-def plot_sparsity_heatmap(df, user_col='user_id', item_col='item_id', rating_col='rating', n_users=50, n_items=50):
-    """
-    Creates a sparsity heatmap for a sample of the user-item matrix.
-    """
-    # Check if columns exist
-    if user_col not in df.columns or item_col not in df.columns:
-        print(f"Error: Columns '{user_col}' or '{item_col}' not found in DataFrame. Please specify correct column names.")
-        return go.Figure()
-
-    # Sample the most active users and items to make the heatmap meaningful
-    top_users = df[user_col].value_counts().nlargest(n_users).index
-    top_items = df[item_col].value_counts().nlargest(n_items).index
-    
-    filtered_df = df[df[user_col].isin(top_users) & df[item_col].isin(top_items)]
-    
-    # Create pivot table (User-Item Matrix)
-    pivot_matrix = filtered_df.pivot_table(index=user_col, columns=item_col, values=rating_col)
-    
-    # Convert to binary (1 if rated, 0 if NaN)
-    binary_matrix = pivot_matrix.notnull().astype(int)
-    
-    # Create Heatmap
-    # 0 = White (Not Rated), 1 = Navy (Rated)
-    fig = px.imshow(
-        binary_matrix,
-        labels=dict(x="Items", y="Users", color="Interaction"),
-        x=binary_matrix.columns,
-        y=binary_matrix.index,
-        color_continuous_scale=[[0, 'white'], [1, 'navy']], # Binary color scale
-        title=f'Sparsity Heatmap (Top {n_users} Users x {n_items} Items)'
-    )
-    
-    fig.update_traces(
-        xgap=1, # Grid lines
-        ygap=1,
-        showscale=False # Hide colorbar for binary
-    )
-    
-    fig.update_layout(
-        title_font=dict(size=24),
-        xaxis=dict(
-            title_font=dict(size=18),
-            tickfont=dict(size=10),
-            showticklabels=False # Hide labels to avoid clutter
-        ),
-        yaxis=dict(
-            title_font=dict(size=18),
-            tickfont=dict(size=10),
-            showticklabels=False
-        ),
-        plot_bgcolor='white'
-    )
-    
-    # Add annotation explaining colors
-    fig.add_annotation(
-        text="<b>Dark Blue:</b> Rated | <b>White:</b> Not Rated",
-        xref="paper", yref="paper",
-        x=0.5, y=-0.1, showarrow=False,
-        font=dict(size=14)
-    )
-    
-    return fig
-
-#31. Statistical Summary Table
+#30. Statistical Summary Table
 def plot_statistical_summary(df):
     """
     Visualizes df.describe() as a polished Plotly table.
@@ -1815,7 +1752,7 @@ def plot_statistical_summary(df):
     )
     return fig
 
-#32. Correlation Heatmap
+#31. Correlation Heatmap
 def plot_correlation_heatmap(df):
     """
     Visualizes the correlation matrix of numerical features.
