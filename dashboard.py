@@ -62,7 +62,7 @@ def clean_datset():
 df = clean_datset()
 
 if df is not None:
-    # --- Sidebar ---
+    # Sidebar 
     st.sidebar.title("📊 ModCloth Analytics")
     st.sidebar.markdown("---")
     

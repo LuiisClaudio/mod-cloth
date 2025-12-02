@@ -684,6 +684,7 @@ def plot_review_length_vs_rating(df):
     plot_df['review_length'] = plot_df['review_text'].str.len()
     
     # Sample if too large for performance
+    #It is to speed up the plotting for large datasets once on Streamlit App was taking too long to load
     if len(plot_df) > 10000:
         plot_df = plot_df.sample(10000, random_state=42)
     
