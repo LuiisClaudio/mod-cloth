@@ -75,9 +75,9 @@ def plot_fit_distribution_by_category(df):
     
     # Color mapping (consistent with previous designs)
     color_map = {
-        'small': '#ff7f0e',      # Orange
-        'fit': '#7f7f7f',        # Grey
-        'large': '#1f77b4'       # Blue
+        'small': "#fa0707",      # Orange
+        'fit': "#00ba19",        # Grey
+        'large': "#e2de02"       # Blue
     }
     
     fig = px.bar(
@@ -114,9 +114,9 @@ def plot_body_measurement_vs_size(df):
     
     # Color mapping
     color_map = {
-        'small': '#ff7f0e',
-        'fit': '#7f7f7f',
-        'large': '#1f77b4'
+        'small': "#eb0909",
+        'fit': "#00bd0d",
+        'large': "#e9e903"
     }
     
     fig = px.scatter(
@@ -1088,35 +1088,43 @@ def plot_top_categories(df, color_palette='Viridis'):
 def plot_fit_distribution(df):
     """
     Creates a donut chart for the distribution of 'fit' feedback.
-    
+
     Args:
         df (pd.DataFrame): DataFrame containing a 'fit' column.
-        
+
     Returns:
         plotly.graph_objects.Figure: The donut chart.
     """
     # Aggregate data
     fit_counts = df['fit'].value_counts().reset_index()
     fit_counts.columns = ['fit', 'count']
-    
+
+    # Define custom color mapping
+    color_map = {
+        'fit': 'green',
+        'small': 'red',
+        'large': 'yellow'
+    }
+    # Map colors to fit values in the order of fit_counts['fit']
+    colors = [color_map.get(fit.lower() if fit.lower() in color_map else fit, '#888') if fit.lower() in color_map else '#888' for fit in fit_counts['fit']]
+
     # Create donut chart
     fig = px.pie(
-        fit_counts, 
-        values='count', 
+        fit_counts,
+        values='count',
         names='fit',
         title='Distribution of "Fit" Feedback',
-        hole=0.5, # Donut shape
-        color_discrete_sequence=px.colors.qualitative.Bold # Distinct colors
+        hole=0.5
     )
-    
-    # Design updates: Direct slice labels
+
+    # Update colors
     fig.update_traces(
-        textposition='inside', 
+        marker=dict(colors=colors, line=dict(color='#000000', width=2)),
+        textposition='inside',
         textinfo='percent+label',
-        textfont_size=16,
-        marker=dict(line=dict(color='#000000', width=2))
+        textfont_size=16
     )
-    
+
     fig.update_layout(
         title_font=dict(size=24),
         hoverlabel=dict(
@@ -1124,7 +1132,7 @@ def plot_fit_distribution(df):
         ),
         showlegend=True
     )
-    
+
     return fig
 
 #21. Hips vs. Waist Scatter Plot
@@ -1616,7 +1624,7 @@ def plot_treemap_review(df):
 
     # Adjective Extraction 
 
-    nlp = spacy.load("en_core_web_sm")
+    #nlp = spacy.load("en_core_web_sm")
     nlp = None
 
     adjective_data = []
