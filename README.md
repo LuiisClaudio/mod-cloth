@@ -8,6 +8,21 @@ This repository contains the coursework for Integrated CA2, completed by Luis Ma
 - `LuisMartins_CA2.ipynb`: Jupyter Notebook with all code, visualizations, and analysis.
 - **dashboard**: https://modclothdashboard.streamlit.app/
 
+---
+
+## 📊 Dashboard Features
+
+- **KPI Cards**: Quick stats on reviews, products, users, and ratings.
+- **Statistical Summary**: Data health check with summary tables.
+- **Correlation Heatmap**: Visualize relationships between features.
+- **Fit & Sizing**: Analyze fit distribution, body measurements, and sizing consistency.
+- **Body Measurements**: Explore bra/shoe size distributions, body shape clustering, and more.
+- **Ratings & Reviews**: Rating distributions, review length analysis, sentiment vs. rating.
+- **Product & Category**: Category breakdowns, popularity analysis, treemaps.
+- **Advanced Analytics**: Parallel categories, voice of customer, and more.
+
+---
+
 ## Features
 
 - Data loading and preprocessing
@@ -34,15 +49,38 @@ This repository contains the coursework for Integrated CA2, completed by Luis Ma
    ```powershell
    jupyter notebook LuisMartins_CA2.ipynb
    ```
+### Prepare the dataset
+
+- Place the ModCloth dataset at: `dataset/modcloth_final_data/modcloth_final_data.json`
+- The dashboard expects the JSON Lines format.
+
+### Run the dashboard
+
+```powershell
+streamlit run dashboard.py
+```
+
+---
 
 ## Usage
 
 Open the notebook and run the cells sequentially to reproduce the analysis and results.
 
-## Author
+## 📁 Files
+
+- `LuisMartins_CA2.ipynb` — Coursework notebook
+- `dashboard.py` — Streamlit dashboard app
+- `plotFunctions.py and LuisMartins_CA2.ipynb` — Custom plotting functions (required for dashboard)
+- `dataset/modcloth_final_data/modcloth_final_data.json` — Data file (not included)
+
+---
+
+## 👤 Author
 
 - **Luis Martins**
 
-## License
+---
 
-This project is for educational purposes.
+## 📄 License
+
+For educational use only.
