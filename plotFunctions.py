@@ -1414,7 +1414,7 @@ def plot_body_shape_analyzer(df):
     
     return fig
 
-#26. "Does It Fit?" Stacked Bar Chart by Category
+#26. Fit Feedback by Category Stacked Bar Chart
 def plot_fit_by_category(df):
     """
     Creates a 100% Stacked Horizontal Bar Chart showing 'fit' feedback by category.
@@ -1432,39 +1432,39 @@ def plot_fit_by_category(df):
     # Calculate percentages per category
     total_counts = fit_counts.groupby('category')['count'].transform('sum')
     fit_counts['percentage'] = fit_counts['count'] / total_counts
-    
+
     # Sort categories by total count or some other metric if desired, 
     # but usually sorting by one of the fit percentages (e.g. % fit) looks best.
     # For now, let's sort by total volume of reviews to keep popular ones at top.
     category_volume = df['category'].value_counts().reset_index()
     category_volume.columns = ['category', 'total']
     top_categories = category_volume.nlargest(10, 'total')['category'].tolist() # Limit to top 10 for readability
-    
+
     filtered_data = fit_counts[fit_counts['category'].isin(top_categories)]
-    
-    # Define Color Palette (Blue=Large, Grey=Fit, Orange=Small)
-    # Note: Ensure the mapping matches the actual values in 'fit' column.
-    # Assuming values are 'Small', 'Fit', 'Large' (case sensitive check needed usually)
+
+    # Normalize 'fit' to match color_map keys (capitalize first letter)
+    filtered_data['fit'] = filtered_data['fit'].str.capitalize()
+
+    # Use a green-to-red palette for fit feedback
+    # Green = Fit, Yellow = Large, Red = Small
     color_map = {
-        'Small': '#ff7f0e',  # Orange
-        'Fit': '#7f7f7f',    # Grey
-        'Large': '#1f77b4',  # Blue
-        'slightly small': '#ffbb78', # Lighter Orange fallback
-        'slightly large': '#aec7e8'  # Lighter Blue fallback
+        'Fit': "#00bd10",    # green
+        'Large': "#eae200",  # yellow
+        'Small': "#d00000"   # red
     }
-    
+
     fig = px.bar(
         filtered_data,
         y='category',
         x='percentage',
-        color='fit',
         orientation='h',
         title='Does It Fit? Breakdown by Category (Top 10)',
         labels={'percentage': 'Percentage', 'category': 'Category', 'fit': 'Fit Feedback'},
-        color_discrete_map=color_map,
-        category_orders={'category': top_categories} # Keep order
+        category_orders={'category': top_categories}, # Keep order
+        color='fit',
+        color_discrete_map=color_map
     )
-    
+
     # Design Updates
     fig.update_layout(
         barmode='stack',
@@ -1483,11 +1483,11 @@ def plot_fit_by_category(df):
         legend=dict(font=dict(size=14)),
         hoverlabel=dict(font_size=16)
     )
-    
+
     fig.update_traces(
         hovertemplate='<b>%{y}</b><br>Fit: %{data.name}<br>Percentage: %{x:.1%}<extra></extra>'
     )
-    
+
     return fig
 
 #27. Quality vs. Popularity Matrix (Bubble Chart)
@@ -1587,7 +1587,8 @@ def plot_sizing_consistency(df):
         y=y_col, 
         title='Sizing Consistency: Data Density by Category & Size',
         labels={'category': 'Category', y_col: 'Size'},
-        color_discrete_sequence=['#000000'] # High contrast dark dots
+        color='category',
+        color_discrete_sequence=px.colors.qualitative.Dark24 # Diverse, dark colors
     )
     
     # Design Updates
@@ -1674,7 +1675,6 @@ def plot_treemap_review(df):
     adj_df = pd.DataFrame(adjective_data)
 
     #3. Aggregation
-    print("Aggregating data")
     # Group by word to get Frequency and Average Rating
     summary = adj_df.groupby('word').agg(
         Frequency=('word', 'count'),
@@ -1685,7 +1685,6 @@ def plot_treemap_review(df):
     top_30_summary = summary.sort_values(by='Frequency', ascending=False).head(30)
 
     #4. Visualization (Treemap)
-    print("Creating visualization")
     fig = px.treemap(
         top_30_summary,
         path=['word'], # Hierarchy (just words here)
