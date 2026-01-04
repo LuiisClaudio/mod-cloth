@@ -171,15 +171,10 @@ if df is not None:
     st.sidebar.markdown("---")
     
     # Page selector within section
-    # Page selector within section
     if len(menu_options[section]) > 1:
         page = st.sidebar.radio("Select Visualization", menu_options[section])
     else:
         page = menu_options[section][0]
-    
-    # Display section info
-    st.sidebar.markdown("---")
-    st.sidebar.info(f"**Current Section:** {section}")
 
     # Global Filters
     st.sidebar.markdown("---")
