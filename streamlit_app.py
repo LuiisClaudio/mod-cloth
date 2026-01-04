@@ -157,14 +157,11 @@ if df is not None:
             "Sentiment & Review Text Analysis"
         ],
         "🏷️ Product & Category": [
-            "Category Breakdown",
-            "Category Treemap",
-            "Popularity Head/Tail",
-            "Quality vs. Popularity Matrix (Bubble Chart)"
+            "Category Performance & Share",
+            "Portfolio Strategy (BCG Matrix)"
         ],
         "🔍 Advanced Analytics": [
-            "Parallel Categories Diagram",
-            "Treemap Adjectives (Voice of Customer)"
+            "Deep Dive Maps"
         ]
     }
     
@@ -514,85 +511,32 @@ if df is not None:
 
 
 
-    #22 Parallel Categories Diagram Page
-    elif page == "Parallel Categories Diagram":
-        st.title("🔍 Parallel Categories Diagram")
+    # 12 Advanced Analytics - Deep Dive
+    elif page == "Deep Dive Maps":
+        st.title("🔍 Advanced Analytics: Deep Dive Maps")
         
-        fig_body_size = pf.plot_parallel_categories(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
+        st.header("The Customer Journey (Parallel Categories)")
+        fig_parallel = pf.plot_parallel_categories(df)
+        st.plotly_chart(fig_parallel, use_container_width=True)
         
         st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>This shows how things flow between categories like category → fit → rating. It's like watching a river split into streams. Thicker flows = more people taking that path.</p>
-            <p>The flow design with proportional widths shows volume, while consistent colors help you track specific segments across different dimensions.</p>
-            <p>You can spot patterns like "dresses that fit well get 5 stars" or "swimwear that's too small gets 1 star." This tells you exactly where problems are and what causes them.</p>
+        <div class="info-box">
+            <h4>Flow Analysis</h4>
+            <p><strong>Trace the path:</strong> Category -> Fit -> Rating.</p>
+            <p><strong>Key Insight:</strong> See those thick bands? That's volume. Notice how "Small" fit (Red) almost always flows to "Low Ratings" (1-2 Stars). This visually proves that fit issues directly kill your reputation.</p>
         </div>
         """, unsafe_allow_html=True)
-
-    #23 Category Treemap Page
-    elif page == "Category Treemap":
-        st.title("🏷️ Category Treemap")
         
-        fig_body_size = pf.plot_category_treemap(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
+        st.markdown("---")
         
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Treemap uses space efficiently bigger rectangles = more reviews/products. Color can show a second thing (like average rating), so you get two pieces of info at once.</p>
-            <p>You can see your whole portfolio at a glance which categories are biggest AND which deliver best customer satisfaction through the colors.</p>
-            <p>This helps you assess your product mix quickly. Not just "what's big" but "what's big AND good quality" (large + good color) vs "what's big but problematic" (large + bad color).</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # Popularity & Categories Re-inserted (Lost in overwrite)
-    elif page == "Popularity Head/Tail":
-        st.title("🏷️ Popularity Head/Tail")
-        fig_body_size = pf.plot_popularity_head_tail(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        st.markdown('<div class="info-box"><h4>The 80/20 Rule</h4><p>Identify your "Star" products vs. the "Tail".</p></div>', unsafe_allow_html=True)
-
-    elif page == "Category Breakdown":
-        st.title("🏷️ Category Breakdown")
-        fig_body_size = pf.plot_category_breakdown(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        st.markdown('<div class="info-box"><h4>Business Mix</h4><p>Understand your portfolio composition.</p></div>', unsafe_allow_html=True)
-
-
-
-
-
-    #27 Quality vs. Popularity Matrix (Bubble Chart) Page
-    elif page == "Quality vs. Popularity Matrix (Bubble Chart)":
-        st.title("🏷️ Quality vs. Popularity Matrix (Bubble Chart)")
-        
-        fig_body_size = pf.plot_quality_popularity_matrix(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
+        st.header("Voice of the Customer (Adjective Treemap)")
+        fig_adj = pf.plot_treemap_review(df)
+        st.plotly_chart(fig_adj, use_container_width=True)
         
         st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Shows three things at once: quality (Y axis), popularity (X axis), and category size (bubble size). Creates quadrants like "stars" (high quality + high popularity) or "dogs" (low on both).</p>
-            <p>Four quadrant layout is like the famous BCG matrix instantly shows which categories to invest in, maintain, or phase out.</p>
-            <p>Strategic view of your portfolio. High quality + growing popularity? Invest there. Established performers? Maintain. Low quality + declining? Maybe time to cut.</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-
-
-    #29 Treemap Adjectives (Voice of Customer) Page
-    elif page == "Treemap Adjectives (Voice of Customer)":
-        st.title("🔍 Treemap Adjectives (Voice of Customer)")
-        
-        fig_body_size = pf.plot_treemap_review(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Pulls out the most common adjectives from reviews. Word size = how often it's used. Instantly shows you what customers are actually saying.</p>
-            <p>Color coding by sentiment (blue = positive words, red = negative) shows both frequency AND emotional tone at once.</p>
-            <p>This captures authentic customer language for marketing, reveals what attributes customers actually care about, and shows gaps between what you say about products and what customers think.</p>
+        <div class="info-box">
+            <h4>Sentiment Mining</h4>
+            <p>We mined thousands of reviews for adjectives. <strong>Blue = Positive</strong>, <strong>Red = Negative</strong>.</p>
+            <p><strong>Action:</strong> If words like "tight", "cheap", or "thin" are big and red, you have quality control issues. If "perfect", "soft", and "flattering" dominate, use those exact words in your marketing copy.</p>
         </div>
         """, unsafe_allow_html=True)
