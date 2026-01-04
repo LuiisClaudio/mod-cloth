@@ -181,18 +181,38 @@ if df is not None:
     st.sidebar.markdown("---")
     st.sidebar.info(f"**Current Section:** {section}")
 
+    # Global Filters
+    st.sidebar.markdown("---")
+    st.sidebar.header("🌍 Global Filters")
+    
+    # 1. Category Filter
+    available_cats = sorted(df['category'].unique())
+    selected_cats = st.sidebar.multiselect("Category", available_cats, default=available_cats)
+    
+    # 2. Fit Filter
+    if 'fit' in df.columns:
+        available_fits = sorted(df['fit'].unique())
+        selected_fits = st.sidebar.multiselect("Fit Feedback", available_fits, default=available_fits)
+    
+    # 3. Rating Filter
+    val_min, val_max = int(df['rating'].min()), int(df['rating'].max())
+    selected_rating_range = st.sidebar.slider("Rating Range", val_min, val_max, (val_min, val_max))
+    
+    # Apply Filters Globally
+    if selected_cats:
+        df = df[df['category'].isin(selected_cats)]
+        
+    if 'fit' in df.columns and selected_fits:
+        df = df[df['fit'].isin(selected_fits)]
+        
+    df = df[(df['rating'] >= selected_rating_range[0]) & (df['rating'] <= selected_rating_range[1])]
+
     # 1 Overview Page (Combined)
     if section == "📈 Overview":
         st.title("📈 Overview & KPIs")
         
-        # Category Filter
-        category_options = ['all'] + sorted(df['category'].unique())
-        selected_category = st.selectbox("Filter by Category", category_options)
-        
-        if selected_category == 'all':
-            filtered_df = df
-        else:
-            filtered_df = df[df['category'] == selected_category]
+        # Use filtered df
+        filtered_df = df
 
         # KPI Cards
         total_reviews = len(filtered_df)
