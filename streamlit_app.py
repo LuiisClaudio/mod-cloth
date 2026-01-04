@@ -7,6 +7,11 @@ import re
 import plotFunctions as pf
 # Set page config
 st.set_page_config(page_title="ModCloth Dashboard", layout="wide")
+st._config.set_option('theme.base', 'light')
+st._config.set_option('theme.primaryColor', '#008080')
+st._config.set_option('theme.backgroundColor', '#FFFFFF')
+st._config.set_option('theme.secondaryBackgroundColor', '#F0F2F6')
+st._config.set_option('theme.textColor', '#262730')
 
 
 # Custom CSS for bright/clear interface
@@ -139,13 +144,9 @@ if df is not None:
             "Dashboard"
         ],
         "👗 Fit & Sizing": [
-            "Fit Distribution by Category",
-            "Body Measurement vs. Size Chosen",
-            "Length Analysis by Height",
-            "Does It Fit? Category Heatmap",
-            "Height vs. Length Boxplot",
-            "Fit Distribution (Donut Chart)",
-            "Sizing Consistency (Strip Plot)"
+            "General Fit Analysis",
+            "Sizing Accuracy & Consistency",
+            "Length & Height Analysis"
         ],
         "📏 Body Measurements": [
             "Bra Size Distribution",
@@ -256,52 +257,105 @@ if df is not None:
         </div>
         """, unsafe_allow_html=True)
 
-    # 2 Fit Analysis Page 
-    elif page == "Fit Distribution by Category":
-        st.title("👗 Fit Distribution by Category")
+    # 2 Fit Analysis - General Fit Analysis
+    elif page == "General Fit Analysis":
+        st.title("👗 General Fit Analysis")
         
-        fig_fit = pf.plot_fit_distribution_by_category(df)
-        fig_fit.update_layout(barmode='stack')
-        st.plotly_chart(fig_fit, use_container_width=True)
+        st.header("Overall Fit Health")
+        col1, col2 = st.columns([1, 2])
+        
+        with col1:
+            fig_donut = pf.plot_fit_distribution(df)
+            st.plotly_chart(fig_donut, use_container_width=True)
+            
+        with col2:
+            st.markdown("""
+            <div class="info-box">
+                <h4>Fit Health Score</h4>
+                <p><strong>The Donut Chart</strong> gives you the instant high-level picture. If the green slice ("Fit") isn't the majority, you have a systemic issue.</p>
+                <p>This is your baseline. Track this number over time. If you change your sizing chart, does the green slice grow?</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+        st.markdown("---")
+        
+        st.header("Fit by Category")
+        fig_bar = pf.plot_fit_by_category(df)
+        st.plotly_chart(fig_bar, use_container_width=True)
         
         st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Each bar is a clothing category (dresses, tops, etc.), split into colored sections showing how many people said "too small," "perfect," or "too big."</p>
-            <p>The colors aren't random red for "too small" (problem), green for "perfect" (good), yellow for "too big" (also a problem). Your brain already knows red = bad and green = good, so it feels natural.</p>
-            <p>This tells you which categories have sizing problems. If dresses are mostly red, size them up. If jeans are mostly green, you nailed it don't change a thing!</p>
+        <div class="info-box">
+            <h4>Category Breakdown</h4>
+            <p>We normalize everything to 100% so you can compare categories fairly. A category with tons of reviews might look "noisy" in a regular chart, but here we just check the <strong>rate</strong> of fit issues.</p>
+            <p>Look for the <strong>Red</strong> (Small) or <strong>Orange</strong> (Large) bars dominating. Those are your priority fix lists.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        
+        st.header("Deep Dive: The 'Emergency Room'")
+        fig_heatmap = pf.plot_fit_category_heatmap(df)
+        st.plotly_chart(fig_heatmap, use_container_width=True)
+        
+        st.markdown("""
+        <div class="info-box">
+            <h4>Heatmap Triage</h4>
+            <p>This heatmap isolates specific problems. Instead of just "Dresses don't fit," you see "Dresses are specifically too small."</p>
+            <p><strong>Actionable Insight:</strong> Use this to instruct your design team. "Widen the hips on Tops" (if Tops are 'Small') or "Shorten the hem on Dresses" (if Dresses are 'Large').</p>
         </div>
         """, unsafe_allow_html=True)
 
-    # 3 Body Measurement vs. Size Chosen Page
-    elif page == "Body Measurement vs. Size Chosen":
-        st.title("👗 Body Measurement vs. Size Chosen")
+    # 3 Fit Analysis - Sizing Accuracy
+    elif page == "Sizing Accuracy & Consistency":
+        st.title("👗 Sizing Accuracy & Consistency")
         
-        fig_body_size = pf.plot_body_measurement_vs_size(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
+        st.header("Sizing Consistency (Strip Plot)")
+        fig_strip = pf.plot_sizing_consistency(df)
+        st.plotly_chart(fig_strip, use_container_width=True)
         
         st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Simple question: Are people picking the right size for their body? Each dot is a customer their actual measurement vs. what size they bought.</p>
-            <p>If everyone's making good choices, you'd see many grey colors. Dots all over the place? People are confused about sizing.</p>
-            <p>The fix: If you see people with certain measurements consistently picking the wrong size, your size chart is probably confusing. Fix the chart = fewer returns = more money.</p>
+        <div class="info-box">
+            <h4>Are your sizes real?</h4>
+            <p>This chart shows individual data points. <strong>Tight clusters</strong> mean your sizing is consistent. <strong>Wide spreads</strong> mean a "Size 8" isn't always a "Size 8".</p>
+            <p>Inconsistent categories confuse customers and cause returns. Fix the categories that look like scattered buckshot first.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        
+        st.header("Customer Choice Analysis")
+        fig_scatter = pf.plot_body_measurement_vs_size(df)
+        st.plotly_chart(fig_scatter, use_container_width=True)
+        
+        st.markdown("""
+        <div class="info-box">
+            <h4>Body Measurement vs. Size Chosen</h4>
+            <p>Are customers picking the right size for their body? If you see many disjointed dots (e.g., small measurements picking large sizes), your <strong>Size Chart</strong> might be misleading.</p>
+            <p>This helps differentiate between "Bad Product Fit" (production issue) and "Bad User Choice" (education/UI issue).</p>
         </div>
         """, unsafe_allow_html=True)
 
-    # 4 Product Ratings Page
-    elif page == "Length Analysis by Height":
-        st.title("👗 Length vs. Height Analysis")
+    # 4 Fit Analysis - Length & Height
+    elif page == "Length & Height Analysis":
+        st.title("👗 Length & Height Analysis")
         
-        fig_body_size = pf.plot_length_vs_height(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
+        col1, col2 = st.columns(2)
         
+        with col1:
+            st.subheader("Feedback by Height Group")
+            fig_length = pf.plot_length_vs_height(df)
+            st.plotly_chart(fig_length, use_container_width=True)
+            
+        with col2:
+            st.subheader("Height Distribution vs. Opinion")
+            fig_box = pf.plot_height_length_boxplot(df)
+            st.plotly_chart(fig_box, use_container_width=True)
+            
         st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Does your clothing length work for both short and tall people? We group customers by height and see what they think.</p>
-            <p>If short people say "too long" and tall people say "too short," you've got a problem. The visualization shows you if opinions are consistent (good) or all over the place (bad).</p>
-            <p>Real talk: Petite and tall versions cost money. This chart tells you if it's worth it. If everyone's happy, save your money. If there's clear frustration at the height extremes, time to expand your offerings.</p>
+        <div class="info-box">
+            <h4>The Petite/Tall Dilemma</h4>
+            <p>Do you need specific Petite or Tall lines? These charts answer that.</p>
+            <p>If your "Too Long" feedback (Red) comes almost exclusively from users under 5'3", you have a <strong>Petite Market Opportunity</strong>. If everyone complains about length regardless of height, you just have a bad product design.</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -432,37 +486,9 @@ if df is not None:
         </div>
         """, unsafe_allow_html=True)
 
-    #15 Does It Fit? Category Heatmap Page
-    elif page == "Does It Fit? Category Heatmap":
-        st.title("👗 Does It Fit? Category Heatmap")
-        
-        fig_body_size = pf.plot_fit_category_heatmap(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>This is your "sizing emergency room" shows which categories are bleeding customers due to fit problems. Each row is a category, columns are fit outcomes (too small/perfect/too big).</p>
-            <p>Orange or Yellow spots = danger zones (lots of poor fits). Green spots = healthy (lots of good fits). Your eye naturally jumps to red, which is exactly where you need to focus.</p>
-            <p>If swimwear is all yellow in "too small," fix those sizes NOW. If jackets are green in "perfect fit," you nailed it don't mess with success. This helps you triage fix the broken stuff first.</p>
-        </div>
-        """, unsafe_allow_html=True)
 
-    #16 Height vs. Length Boxplot Page
-    elif page == "Height vs. Length Boxplot":
-        st.title("👗 Height vs. Length Boxplot")
-        
-        fig_body_size = pf.plot_height_length_boxplot(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Do shorter and taller people feel differently about your garment lengths? We group by height (like under 160 cm, 160–170 cm, over 170 cm) and see what they say.</p>
-            <p>Boxes overlapping a lot? Your standard lengths work for everyone great! Boxes totally separate? Short people say "too long," tall people say "too short" you need petite/tall versions.</p>
-            <p>The business decision: Petite and tall versions cost money. If this shows a real problem AND you have enough customers at those extremes, it's worth it. If everyone's basically happy, save your money.</p>
-        </div>
-        """, unsafe_allow_html=True)
+
+
 
     #17 Rating Distribution Histogram Page
     elif page == "Rating Distribution Histogram":
@@ -512,20 +538,7 @@ if df is not None:
         </div>
         """, unsafe_allow_html=True)
 
-    #20 Fit Distribution (Donut Chart) Page
-    elif page == "Fit Distribution (Donut Chart)":
-        st.title("👗 Fit Distribution (Donut Chart)")
-        
-        fig_body_size = pf.plot_fit_distribution(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>A donut chart is a pie chart with a hole and that hole is useful! You can put your main number there (like "67% Perfect Fit") in big bold text, while the ring shows the breakdown.</p>
-            <p>This is your overall sizing health score. Big green slice? You're killing it. Red or blue dominating? You have systematic sizing problems. Track this over time to see if changes actually help.</p>
-        </div>
-        """, unsafe_allow_html=True)
+
 
     #21 Hips vs. Waist Scatter Plot Page
     elif page == "Hips vs. Waist Scatter Plot":
@@ -607,21 +620,7 @@ if df is not None:
         </div>
         """, unsafe_allow_html=True)
 
-    #26 Fit by Category (100% Stacked Horizontal Bar) Page
-    elif page == "Fit by Category (100% Stacked Horizontal Bar)":
-        st.title("👗 Fit by Category (100% Stacked Horizontal Bar)")
-        
-        fig_body_size = pf.plot_fit_by_category(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Everything's normalized to 100% so you can compare fit success rates fairly across categories, regardless of how popular each is.</p>
-            <p>Horizontal bars fit long category names, and consistent colors (green for perfect fit) let you scan quickly for winners.</p>
-            <p>This shows which categories have best/worst fit rates independent of volume. Small categories with great fit won't get overlooked just because they're not popular.</p>
-        </div>
-        """, unsafe_allow_html=True)
+
 
     #27 Quality vs. Popularity Matrix (Bubble Chart) Page
     elif page == "Quality vs. Popularity Matrix (Bubble Chart)":
@@ -639,21 +638,7 @@ if df is not None:
         </div>
         """, unsafe_allow_html=True)
 
-    #28 Sizing Consistency (Strip Plot) Page
-    elif page == "Sizing Consistency (Strip Plot)":
-        st.title("👗 Sizing Consistency (Strip Plot)")
-        
-        fig_body_size = pf.plot_sizing_consistency(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Shows individual data points across categories. Tight clustering = consistent sizing. Wide spread = people can't agree on how it fits.</p>
-            <p>Jittered points (slightly offset) prevent dots from stacking on top of each other, so you can see density without losing individual observations.</p>
-            <p>This identifies categories with inconsistent sizing where customers are confused. Prioritize fixing those standardization matters most where there's the biggest mess.</p>
-        </div>
-        """, unsafe_allow_html=True)
+
 
     #29 Treemap Adjectives (Voice of Customer) Page
     elif page == "Treemap Adjectives (Voice of Customer)":
