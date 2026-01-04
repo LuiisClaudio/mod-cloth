@@ -1,7 +1,10 @@
 # 👗 ModCloth Retail Analytics Dashboard
 
+## 📊 Dashboard link: https://mod-cloth-dashboard.streamlit.app/
 
-[![Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://modclothdashboard.streamlit.app/)
+
+
+[![Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://mod-cloth-dashboard.streamlit.app/)
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/)
 [![Plotly](https://img.shields.io/badge/Plotly-Interactive-green)](https://plotly.com/)
 [![Status](https://img.shields.io/badge/Status-Active-success)]()

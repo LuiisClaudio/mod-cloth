@@ -70,9 +70,7 @@ if df is not None:
     # Grouped navigation
     menu_options = {
         "📈 Overview": [
-            "KPI Cards",
-            "Statistical Summary",
-            "Correlation Heatmap"
+            "Dashboard"
         ],
         "👗 Fit & Sizing": [
             "Fit Distribution by Category",
@@ -114,14 +112,18 @@ if df is not None:
     st.sidebar.markdown("---")
     
     # Page selector within section
-    page = st.sidebar.radio("Select Visualization", menu_options[section])
+    # Page selector within section
+    if len(menu_options[section]) > 1:
+        page = st.sidebar.radio("Select Visualization", menu_options[section])
+    else:
+        page = menu_options[section][0]
     
     # Display section info
     st.sidebar.markdown("---")
     st.sidebar.info(f"**Current Section:** {section}")
 
-    # 1 KPI Cards Page
-    if page == "KPI Cards":
+    # 1 Overview Page (Combined)
+    if section == "📈 Overview":
         st.title("📈 Overview & KPIs")
         
         # Category Filter
@@ -154,9 +156,10 @@ if df is not None:
         </div>
         """, unsafe_allow_html=True)
 
-    # Statistical Summary Page
-    elif page == "Statistical Summary":
-        st.title("📈 Statistical Summary")
+        st.markdown("---")
+        
+        # Statistical Summary
+        st.header("📈 Statistical Summary")
         
         fig_stats = pf.plot_statistical_summary(df)
         st.plotly_chart(fig_stats, use_container_width=True)
@@ -170,9 +173,10 @@ if df is not None:
         </div>
         """, unsafe_allow_html=True)
 
-    # Correlation Heatmap Page (moved to Overview)
-    elif page == "Correlation Heatmap":
-        st.title("📈 Correlation Heatmap")
+        st.markdown("---")
+        
+        # Correlation Heatmap
+        st.header("📈 Correlation Heatmap")
         
         fig_corr = pf.plot_correlation_heatmap(df)
         st.plotly_chart(fig_corr, use_container_width=True)
