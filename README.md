@@ -10,12 +10,13 @@
 
 ## 📖 Project Overview
 
-In the e-commerce fashion industry, **fit and sizing issues** are the primary drivers of returns, costing retailers billions annually. This project is a comprehensive **Data Analytics Dashboard** built to analyze customer transactions and reviews from **ModCloth**. 
+In the e-commerce fashion industry, **fit and sizing issues** are the primary drivers of returns, costing retailers billions annually. This project is a comprehensive **Data Analytics Dashboard & Recommendation Engine** built to analyze customer transactions and reviews from **ModCloth**. 
 
-The goal is to provide **actionable intelligence** to product designers, merchandisers, and inventory managers. By analyzing over **[Total Rows]** data points, this dashboard answers critical business questions:
+The goal is to provide **actionable intelligence** to product designers, merchandisers, and inventory managers. By analyzing over **75,000+** data points, this dashboard answers critical business questions:
 - *Are our sizing charts accurate across all categories?*
 - *Which body shapes are we failing to serve?*
 - *How does sentiment correlate with specific fit problems?*
+- *Can we predict what a user will like based on their history?*
 
 ## 🚀 Key Features & Business Insights
 
@@ -42,6 +43,11 @@ The dashboard is structured into 6 strategic sections, transforming raw data int
 - **Pareto Analysis (80/20 Rule)**: Identifies the "Head" (bestsellers) vs. "Tail" products.
 - **Quality/Popularity Matrix**: A BCG-style matrix to decide whether to *Invest, Maintain, or Divest* products based on rating and volume.
 
+### 6. 🤖 AI-Powered Recommendation System
+- **Content-Based Filtering**: Recommends items by analyzing product descriptions and features using **TF-IDF Vectorization**.
+- **Collaborative Filtering**: Implements **Item-Based K-Nearest Neighbors (KNN)** to suggest products based on "users who liked this also liked..." patterns.
+- **Personalization**: Delivers tailored suggestions to increase cross-selling opportunities and user retention.
+
 ---
 
 ## 🛠️ Tech Stack & Methodology
@@ -51,7 +57,10 @@ The dashboard is structured into 6 strategic sections, transforming raw data int
 - **Streamlit**: Interactive web application framework.
 - **Pandas**: Advanced data manipulation and cleaning (Regex for text standardization, imputation strategies for missing metrics).
 - **Plotly Express/Graph Objects**: Interactive, high-performance visualizations.
-- **Scikit-Learn / Stats**: Correlation analysis and statistical profiling.
+- **Scikit-Learn**: 
+    - **TF-IDF & Cosine Similarity**: For Content-Based recommendations.
+    - **K-Nearest Neighbors (KNN)**: For Collaborative Filtering.
+    - **Clustering**: For body shape segmentation.
 - **TextBlob**: Sentiment polarity analysis (Positivity/Negativity scoring).
 - **Text Analysis**: Custom keyword extraction algorithms for Voice of Customer insights.
 
