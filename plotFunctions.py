@@ -54,6 +54,8 @@ def show_kpi_cards(df, category_filter='all'):
     fig.update_layout(
         grid={'rows': 1, 'columns': 4, 'pattern': "independent"},
         template="plotly_white",
+        font={'family': 'Arial'},
+        margin=dict(l=20, r=20, t=30, b=20),
         height=200
     )
     return fig.show()
@@ -74,10 +76,11 @@ def plot_fit_distribution_by_category(df):
     fit_by_cat_filtered = fit_by_cat[fit_by_cat['category'].isin(top_categories)]
     
     # Color mapping (consistent with previous designs)
+    # Color mapping (Standardized Fit Palette)
     color_map = {
-        'small': "#fa0707",      # Orange
-        'fit': "#00ba19",        # Grey
-        'large': "#e2de02"       # Blue
+        'small': "#E74C3C",      # Red
+        'fit': "#2ECC71",        # Green
+        'large': "#F39C12"       # Orange
     }
     
     fig = px.bar(
@@ -113,10 +116,11 @@ def plot_body_measurement_vs_size(df):
     plot_df = df[(df['hips'] > 0) & (df['size'] > 0)].copy()
     
     # Color mapping
+    # Color mapping
     color_map = {
-        'small': "#eb0909",
-        'fit': "#00bd0d",
-        'large': "#e9e903"
+        'small': "#E74C3C",
+        'fit': "#2ECC71",
+        'large': "#F39C12"
     }
     
     fig = px.scatter(
@@ -133,12 +137,13 @@ def plot_body_measurement_vs_size(df):
     fig.update_traces(marker=dict(size=8, line=dict(width=0.5, color='white')))
     
     fig.update_layout(
-        title_font=dict(size=24),
+        title_font=dict(size=24, family="Arial"),
         xaxis=dict(title_font=dict(size=18), tickfont=dict(size=14)),
         yaxis=dict(title_font=dict(size=18), tickfont=dict(size=14)),
         legend_title=dict(font=dict(size=16)),
         legend=dict(font=dict(size=14)),
-        hoverlabel=dict(font_size=16),
+        hoverlabel=dict(font_size=16, font_family="Arial"),
+        plot_bgcolor='white',
         height=600
     )
     
@@ -174,7 +179,7 @@ def plot_length_vs_height(df):
         color='length_category',
         title='Length Feedback by Height: Finding the Perfect Fit',
         labels={'percentage': 'Percentage (%)', 'height': 'Customer Height', 'length_category': 'Length Feedback'},
-        color_discrete_map={'Just Right': '#2ca02c', 'Too Long/Short': '#d62728'},
+        color_discrete_map={'Just Right': '#2ECC71', 'Too Long/Short': '#E74C3C'},
         barmode='stack'
     )
     
@@ -227,7 +232,7 @@ def plot_bra_size_heatmap(df):
         z=heatmap_data.values,
         x=heatmap_data.columns.astype(str),
         y=heatmap_data.index,
-        colorscale='YlOrRd',
+        colorscale='Teal',
         hovertemplate='<b>Cup Size:</b> %{y}<br><b>Band Size:</b> %{x}<br><b>Count:</b> %{z}<extra></extra>',
         colorbar=dict(title="Count")
     ))
@@ -279,7 +284,7 @@ def plot_shoe_size_distribution(df):
     fig.add_trace(
         go.Histogram(
             x=plot_df['shoe_size_num'],
-            marker_color='#3366CC',
+            marker_color='#008080', # Teal
             opacity=0.75,
             nbinsx=20,
             name='Shoe Size',
@@ -358,8 +363,8 @@ def plot_body_shape_clustering(df):
         title='Body Shape Analysis: Waist vs. Hips Measurements',
         labels={'hips': 'Hip Measurement (inches)', 'waist': 'Waist Measurement (inches)', 'body_shape': 'Body Shape'},
         color_discrete_map={
-            'Hourglass/Pear': '#E74C3C',
-            'Balanced': '#F39C12',
+            'Hourglass/Pear': '#FF6B6B',
+            'Balanced': '#2ECC71',
             'Rectangle/Apple': '#3498DB'
         },
         opacity=0.6
@@ -399,6 +404,7 @@ def plot_rating_vs_category(df):
         x='category',
         y='rating',
         color='category',
+        color_discrete_sequence=px.colors.qualitative.Bold,
         box=True,  # Show box plot inside
         points='outliers',  # Show outlier points
         title='Rating Distribution by Category',
@@ -455,7 +461,7 @@ def plot_popularity_head_tail(df):
             x=item_counts['rank'],
             y=item_counts['review_count'],
             name='Review Count',
-            marker_color='#3366CC',
+            marker_color='#008080', # Teal
             opacity=0.7
         ),
         secondary_y=False
@@ -537,7 +543,7 @@ def plot_category_breakdown(df):
         labels={'count': 'Number of Reviews', 'category': 'Category'},
         text='count',
         color='count',
-        color_continuous_scale='Viridis'
+        color_continuous_scale='Teal'
     )
     
     fig.update_traces(
@@ -946,11 +952,11 @@ def plot_rating_distribution_histogram(df):
         labels={'rating': 'Rating (Stars)', 'count': 'Number of Reviews'},
         color='rating',  # Color bars by rating value
         color_discrete_map={
-            1: '#d62728',  # Red
-            2: '#ff7f0e',  # Orange
-            3: '#bcbd22',  # Olive
-            4: '#1f77b4',  # Blue
-            5: '#2ca02c'   # Green
+            1: '#E74C3C',  # Red
+            2: '#E67E22',  # Orange
+            3: '#F1C40F',  # Yellow
+            4: '#3498DB',  # Blue
+            5: '#2ECC71'   # Green
         }
     )
     
@@ -1059,7 +1065,7 @@ def plot_top_categories(df, color_palette='Viridis'):
         labels={'count': 'Number of Reviews', 'category': 'Category'},
         text='count',
         color='count',
-        color_continuous_scale=color_palette
+        color_continuous_scale='Teal'
     )
 
     # Design updates: Large font for category names
@@ -1101,9 +1107,9 @@ def plot_fit_distribution(df):
 
     # Define custom color mapping
     color_map = {
-        'fit': 'green',
-        'small': 'red',
-        'large': 'yellow'
+        'fit': '#2ECC71',
+        'small': '#E74C3C',
+        'large': '#F39C12'
     }
     # Map colors to fit values in the order of fit_counts['fit']
     colors = [color_map.get(fit.lower() if fit.lower() in color_map else fit, '#888') if fit.lower() in color_map else '#888' for fit in fit_counts['fit']]
@@ -1154,7 +1160,7 @@ def plot_body_measurements(df):
         color='size',
         title='Hips vs. Waist Measurements (Colored by Size)',
         labels={'waist': 'Waist Measurement', 'hips': 'Hips Measurement', 'size': 'Size'},
-        color_continuous_scale=px.colors.sequential.Viridis # High contrast if size is numeric, or qualitative if categorical
+        color_continuous_scale=px.colors.sequential.Teal # Consistent Teal Theme
     )
     
     # Design updates: Large markers
@@ -1235,7 +1241,7 @@ def plot_parallel_categories(df):
         color=color_col, 
         title='Parallel Categories: Flow of User Attributes to Fit Feedback',
         labels={col: col.title() for col in available_cols},
-        color_continuous_scale=px.colors.sequential.Inferno
+        color_continuous_scale=px.colors.sequential.Teal
     )
     
     fig.update_layout(
@@ -1448,9 +1454,9 @@ def plot_fit_by_category(df):
     # Use a green-to-red palette for fit feedback
     # Green = Fit, Yellow = Large, Red = Small
     color_map = {
-        'Fit': "#00bd10",    # green
-        'Large': "#eae200",  # yellow
-        'Small': "#d00000"   # red
+        'Fit': "#2ECC71",    # Green
+        'Large': "#F39C12",  # Orange
+        'Small': "#E74C3C"   # Red
     }
 
     fig = px.bar(
@@ -1514,6 +1520,7 @@ def plot_quality_popularity_matrix(df):
         y='review_count',
         size='review_count', # Bubble size proportional to popularity
         color='category', # Color by category for distinction
+        color_discrete_sequence=px.colors.qualitative.Bold, # Vivid colors
         hover_name='category',
         title='Quality vs. Popularity Matrix (Bubble Chart)',
         labels={'avg_rating': 'Average Rating (Quality)', 'review_count': 'Number of Reviews (Popularity)'},
@@ -1588,7 +1595,7 @@ def plot_sizing_consistency(df):
         title='Sizing Consistency: Data Density by Category & Size',
         labels={'category': 'Category', y_col: 'Size'},
         color='category',
-        color_discrete_sequence=px.colors.qualitative.Dark24 # Diverse, dark colors
+        color_discrete_sequence=px.colors.qualitative.Bold # Vivid colors
     )
     
     # Design Updates
@@ -1737,7 +1744,7 @@ def plot_statistical_summary(df):
     fig = go.Figure(data=[go.Table(
         header=dict(
             values=['<b>Statistic</b>'] + [f'<b>{col.replace("_", " ").title()}</b>' for col in desc_df.columns if col != 'index'],
-            fill_color='teal',
+            fill_color='#008080', # Teal header
             align='left',
             font=dict(color='white', size=14),
             height=40

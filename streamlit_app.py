@@ -7,7 +7,73 @@ import re
 import plotFunctions as pf
 # Set page config
 st.set_page_config(page_title="ModCloth Dashboard", layout="wide")
-st._config.set_option('theme.base', 'light')
+
+
+# Custom CSS for bright/clear interface
+st.markdown("""
+<style>
+    /* Main Background force Light */
+    .stApp {
+        background-color: #FFFFFF;
+        color: #262730;
+    }
+    
+    /* Sidebar Background force Light */
+    [data-testid="stSidebar"] {
+        background-color: #F8F9FA;
+        border-right: 1px solid #E6E6E6;
+    }
+
+    /* Force all base text in sidebar to dark grey (Fixes Dark Mode White Text) */
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] span, 
+    [data-testid="stSidebar"] div,
+    [data-testid="stSidebar"] .stMarkdown {
+        color: #262730 !important;
+    }
+    
+    /* Headers (h1, h2, h3) - Teal */
+    h1, h2, h3, h4 {
+        color: #008080 !important;
+        font-family: 'Arial', sans-serif;
+        font-weight: 700;
+    }
+    
+    /* Metric Cards */
+    [data-testid="stMetricValue"] {
+        color: #008080 !important;
+    }
+    [data-testid="stMetricLabel"] {
+        color: #555555 !important;
+    }
+    
+    /* Custom containers */
+    .info-box {
+        background-color: #F0F2F6;
+        padding: 20px;
+        border-radius: 10px;
+        border-left: 5px solid #008080;
+        margin-top: 20px;
+    }
+    
+    /* Radio Button Group Label (The Title) */
+    .stRadio > label {
+        color: #008080 !important;
+        font-weight: bold;
+    }
+    
+    /* Radio Button Options (The Items) - Specific fix for navigation visibility */
+    .stRadio [data-testid="stMarkdownContainer"] > p {
+        color: #262730 !important; 
+    }
+    
+    /* Selectbox Label */
+    .stSelectbox label {
+        color: #008080 !important;
+        font-weight: bold;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 def load_dataset():
     # Load the dataset from JSON file (JSON Lines format)
