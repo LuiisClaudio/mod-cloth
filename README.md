@@ -1,86 +1,104 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/E3bJQmxL)
-# Integrated CA2: Data Visualization Techniques and Machine Learning Basics
+# 👗 ModCloth Retail Analytics Dashboard
 
-This repository contains the coursework for Integrated CA2, completed by Luis Martins. The main file, `LuisMartins_CA2.ipynb`, demonstrates data visualization techniques and basic machine learning workflows using Python.
 
-## Contents
+[![Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://modclothdashboard.streamlit.app/)
+[![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/)
+[![Plotly](https://img.shields.io/badge/Plotly-Interactive-green)](https://plotly.com/)
+[![Status](https://img.shields.io/badge/Status-Active-success)]()
 
-- `LuisMartins_CA2.ipynb`: Jupyter Notebook with all code, visualizations, and analysis.
-- **dashboard**: https://modclothdashboard.streamlit.app/
+> **"Turning customer feedback into fit & sizing strategy."**
 
----
+## 📖 Project Overview
 
-## 📊 Dashboard Features
+In the e-commerce fashion industry, **fit and sizing issues** are the primary drivers of returns, costing retailers billions annually. This project is a comprehensive **Data Analytics Dashboard** built to analyze customer transactions and reviews from **ModCloth**. 
 
-- **KPI Cards**: Quick stats on reviews, products, users, and ratings.
-- **Statistical Summary**: Data health check with summary tables.
-- **Correlation Heatmap**: Visualize relationships between features.
-- **Fit & Sizing**: Analyze fit distribution, body measurements, and sizing consistency.
-- **Body Measurements**: Explore bra/shoe size distributions, body shape clustering, and more.
-- **Ratings & Reviews**: Rating distributions, review length analysis, sentiment vs. rating.
-- **Product & Category**: Category breakdowns, popularity analysis, treemaps.
-- **Advanced Analytics**: Parallel categories, voice of customer, and more.
+The goal is to provide **actionable intelligence** to product designers, merchandisers, and inventory managers. By analyzing over **[Total Rows]** data points, this dashboard answers critical business questions:
+- *Are our sizing charts accurate across all categories?*
+- *Which body shapes are we failing to serve?*
+- *How does sentiment correlate with specific fit problems?*
 
----
+## 🚀 Key Features & Business Insights
 
-## Features
+The dashboard is structured into 6 strategic sections, transforming raw data into decision-making tools:
 
-- Data loading and preprocessing
-- Exploratory Data Analysis (EDA) with visualizations
-- Implementation of basic machine learning models
-- Evaluation and discussion of results
+### 1. 📊 Executive Overview
+- **KPI Cards**: Instant view of Total Reviews, Unique Products, User count, and Avg Ratings.
+- **Business Value**: "Pulse check" for stakeholders to gauge overall platform health in seconds.
 
-## Getting Started
+### 2. 👗 Fit & Sizing Intelligence
+- **Fit Distribution**: Identifies categories with high "Small" or "Large" feedback rates.
+- **Actionable Insight**: "Swimwear runs small? Resize the next batch."
+- **Length vs. Height**: Visualizes if "standard" lengths work for petite/tall customers.
 
-1. **Clone the repository:**
-   ```powershell
-   git clone https://github.com/your-username/integrated-ca2-dvt-and-mlb-LuiisClaudio.git
-   ```
+### 3. 📏 Body Measurement Analysis
+- **Clustering**: Categorizes customers into body shapes (Pear, Hourglass, Rectangle) using anthropometric ratios.
+- **Strategic Value**: Move beyond "Size 10" to designing for "Size 10 Curvy" vs "Size 10 Straight".
 
-2. **Install dependencies:**
-   - Make sure you have Python 3.x installed.
-   - Install required packages (e.g., pandas, numpy, matplotlib, seaborn, scikit-learn, jupyter):
-     ```powershell
-     pip install -r requirements.txt
-     ```
-     *(If `requirements.txt` is not present, install packages manually.)*
+### 4. ⭐ Voice of the Customer
+- **Sentiment & Review Analysis**: Uses Text Analysis techniques to extract common adjectives from reviews.
+- **Insight**: If "tight" appears with negative sentiment in "Dresses", it confirms a sizing defect, not a style preference.
 
-3. **Run the notebook:**
-   ```powershell
-   jupyter notebook LuisMartins_CA2.ipynb
-   ```
-### Prepare the dataset
-
-- Place the ModCloth dataset at: `dataset/modcloth_final_data/modcloth_final_data.json`
-- The dashboard expects the JSON Lines format.
-
-### Run the dashboard
-
-```powershell
-streamlit run dashboard.py
-```
+### 5. 🏷️ Portfolio Performance
+- **Pareto Analysis (80/20 Rule)**: Identifies the "Head" (bestsellers) vs. "Tail" products.
+- **Quality/Popularity Matrix**: A BCG-style matrix to decide whether to *Invest, Maintain, or Divest* products based on rating and volume.
 
 ---
 
-## Usage
+## 🛠️ Tech Stack & Methodology
 
-Open the notebook and run the cells sequentially to reproduce the analysis and results.
+**Languages & Frameworks:**
+- **Python**: Core logic and data processing.
+- **Streamlit**: Interactive web application framework.
+- **Pandas**: Advanced data manipulation and cleaning (Regex for text standardization, imputation strategies for missing metrics).
+- **Plotly Express/Graph Objects**: Interactive, high-performance visualizations.
+- **Scikit-Learn / Stats**: Correlation analysis and statistical profiling.
+- **TextBlob**: Sentiment polarity analysis (Positivity/Negativity scoring).
+- **Text Analysis**: Custom keyword extraction algorithms for Voice of Customer insights.
 
-## 📁 Files
-
-- `LuisMartins_CA2.ipynb` — Coursework notebook
-- `dashboard.py` — Streamlit dashboard app
-- `plotFunctions.py and LuisMartins_CA2.ipynb` — Custom plotting functions (required for dashboard)
-- `dataset/modcloth_final_data/modcloth_final_data.json` — Data file (not included)
+**Data Pipeline:**
+The `clean_datset()` function demonstrates robust data engineering:
+1.  **Standardization**: Converts column names to snake_case.
+2.  **Imputation**: Uses median strategies for critical measurements (waist, hips) to preserve distribution integrity.
+3.  **Parsing**: Extracts complex string data (e.g., bra sizes) into analyzable components.
+4.  **Segmentation**: Implements logic-based clustering to categorize customers into body shapes (Pear, Hourglass, Rectangle) based on WHR (Waist-to-Hip Ratio).
 
 ---
 
-## 👤 Author
+## 💻 Installation & Usage
 
-- **Luis Martins**
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/LuiisClaudio/Mod_Cloth_Dashboard.git
+    cd Mod_Cloth_Dashboard
+    ```
+
+2.  **Install Dependencies**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+3.  **Run the Dashboard**
+    ```bash
+    streamlit run streamlit_app.py
+    ```
 
 ---
 
-## 📄 License
+## 📈 Visual Preview
 
-For educational use only.
+*(Placeholder for Screenshots - Recommended: meaningful captions for each)*
+
+| **Fit Analysis** | **Body Shape Clustering** |
+|:---:|:---:|
+| *Identifying categories with high return risks* | *Segmenting customers by real body observations* |
+
+---
+
+## 👨‍💻 About the Analyst
+
+**Luis Claudio**  
+*Data Analyst*
+
+I specialize in building tools that make data accessible and actionable. This project demonstrates my ability not just to code, but to **think like a product manager**—focusing on the "So What?" behind every number.
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](https://www.linkedin.com/in/your-profile) 
