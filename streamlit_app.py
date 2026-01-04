@@ -149,17 +149,12 @@ if df is not None:
             "Length & Height Analysis"
         ],
         "📏 Body Measurements": [
-            "Bra Size Distribution",
-            "Shoe Size Distribution",
-            "Body Shape Clustering",
-            "Hips vs. Waist Scatter Plot",
-            "Body Shape Analyzer (Interactive Histogram)"
+            "Measurement Distributions (Bra & Shoe)",
+            "Body Shape Analysis"
         ],
         "⭐ Ratings & Reviews": [
-            "Rating vs. Category",
-            "Rating Distribution (Bar Chart)",
-            "Review Length vs. Rating",
-            "Sentiment Polarity vs. Rating"
+            "Rating Overview & Distributions",
+            "Sentiment & Review Text Analysis"
         ],
         "🏷️ Product & Category": [
             "Category Breakdown",
@@ -359,202 +354,165 @@ if df is not None:
         </div>
         """, unsafe_allow_html=True)
 
-    # 5 Voice of Customer Page
-    elif page == "Bra Size Distribution":
-        st.title("📏 Bra Size Distribution")
+    # 5 Body Measurements - Distributions
+    elif page == "Measurement Distributions (Bra & Shoe)":
+        st.title("📏 Measurement Distributions")
+
+        col1, col2 = st.columns(2)
         
-        fig_body_size = pf.plot_bra_size_heatmap(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
+        with col1:
+            st.header("Bra Size Heatmap")
+            fig_bra = pf.plot_bra_size_heatmap(df)
+            st.plotly_chart(fig_bra, use_container_width=True)
+            
+            st.markdown("""
+            <div class="info-box">
+                <h4>Inventory Planning: Bra Sizes</h4>
+                <p>This heatmap identifies your highest volume sizes immediately. The dark spots are where you must never stock out.</p>
+                <p>It also reveals "Ghost Sizes" combinations that exist in theory but have zero customers. Don't waste warehouse space on them.</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+        with col2:
+            st.header("Shoe Size & Width")
+            fig_shoe = pf.plot_shoe_size_distribution(df)
+            st.plotly_chart(fig_shoe, use_container_width=True)
+            
+            st.markdown("""
+            <div class="info-box">
+                <h4>Inventory Planning: Shoes</h4>
+                <p>Shoe sizes follow an almost perfect bell curve. This chart validates if your inventory ratio matches the population bell curve.</p>
+                <p>If your sales don't look like this curve, you are either under-stocking the popular sizes (middle) or over-stocking the outliers (ends).</p>
+            </div>
+            """, unsafe_allow_html=True)
+
+    # 6 Body Measurements - Shape Analysis
+    elif page == "Body Shape Analysis":
+        st.title("📏 Body Shape Analysis")
+        
+        st.header("Interactive Measurements Analyzer")
+        fig_interact = pf.plot_body_shape_analyzer(df)
+        st.plotly_chart(fig_interact, use_container_width=True)
         
         st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Bra sizes are tricky they have TWO parts (band AND cup). A heatmap lets you see both at once. Darker colors = more customers with that combo.</p>
-            <p>Your eye naturally goes to the dark spots, which are your most common sizes. No math needed just look and you know what to stock up on.</p>
-            <p>Business wise? This is literally your inventory shopping list. Dark spot at 34B but you're low on stock? You're losing sales. Light spot at 38DD but you're fully stocked? You're wasting money and warehouse space.</p>
+        <div class="info-box">
+            <h4>Explore the Population</h4>
+            <p>Use the dropdown to explore any body dimension (Hips, Waist, Bust, etc.). This allows you to check for skewness or outliers in any specific measurement you are designing for.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.subheader("Hips vs. Waist Clusters")
+            fig_scatter = pf.plot_body_measurements(df)
+            st.plotly_chart(fig_scatter, use_container_width=True)
+            
+        with col2:
+            st.subheader("Body Shape Segmentation")
+            fig_clusters = pf.plot_body_shape_clustering(df)
+            st.plotly_chart(fig_clusters, use_container_width=True)
+
+        st.markdown("""
+        <div class="info-box">
+            <h4>Beyond Just "Size"</h4>
+            <p>Two women can both be "Size 10" but have totally different shapes. These charts cluster users into <strong>shape profiles</strong> (Apple, Pear, Hourglass, Rectangle).</p>
+            <p><strong>Strategic Value:</strong> If 40% of your customers are "Pear Shaped" (wider hips), you need to ensure your pants are cut with more curve, regardless of the waist size number.</p>
         </div>
         """, unsafe_allow_html=True)
 
-    # 6 Shoe Size Distribution Page
-    elif page == "Shoe Size Distribution":
-        st.title("📏 Shoe Size Distribution")
-        
-        fig_body_size = pf.plot_shoe_size_distribution(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
+    # 8 Ratings - Overview
+    elif page == "Rating Overview & Distributions":
+        st.title("⭐ Rating Overview & Distributions")
+
+        st.header("Rating Distribution")
+        fig_hist = pf.plot_rating_distribution(df)
+        st.plotly_chart(fig_hist, use_container_width=True)
         
         st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Shoe sizes follow a bell curve most people are in the middle (like 7 8), fewer at the extremes (size 5 or 11). The histogram literally shows this as a bell shape.</p>
-            <p>We use continuous bars because sizes are sequential (7 comes before 8). This makes it super easy to see where the "hump" is that's your average customer.</p>
-            <p>Stock based on this! If the peak is at size 8, order tons of 8s. Don't over buy size 5 just because "we should have all sizes" the data shows you won't sell many. Stock what people actually want.</p>
+        <div class="info-box">
+            <h4>Customer Sentiment Snapshot</h4>
+            <p>This checks your "Brand Health". A healthy brand has a "J-curve" (mostly 5 stars, some 4s). If you see a U-shape (lots of 1s and 5s), your product is polarizing.</p>
         </div>
         """, unsafe_allow_html=True)
-
-    # 7 Body Shape Clustering Page
-    elif page == "Body Shape Clustering":
-        st.title("📏 Body Shape Clustering")
+            
+        st.markdown("---")
         
-        fig_body_size = pf.plot_body_shape_clustering(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
+        st.header("Category Performance Comparison")
+        fig_box = pf.plot_rating_vs_category(df)
+        st.plotly_chart(fig_box, use_container_width=True)
         
         st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Not all size 10s are the same! This uses math to group people by actual body shape pear, apple, hourglass, etc. Each colored blob is a different body type.</p>
-            <p>The center of each blob is the "typical" person in that group super useful for designing clothes that actually fit.</p>
-            <p>Why bother? If you design everything for one body type, you're alienating tons of customers. This shows you how many different shapes you're dealing with, so you can create better fits for everyone. Plus, you can target marketing like "perfect for pear shapes" and actually mean it!</p>
+        <div class="info-box">
+            <h4>Winners & Losers</h4>
+            <p>Box plots allow fairness. You can compare the <strong>Quality</strong> of categories, not just their popularity. High medians = High Quality.</p>
         </div>
         """, unsafe_allow_html=True)
+        
+        # st.markdown("---")
+        
+        # st.header("Deep Dive: Violin Plot (Top 10)")
+        # fig_violin = pf.plot_quality_violin(df)
+        # st.plotly_chart(fig_violin, use_container_width=True) 
+        
+        # st.markdown("""
+        # <div class="info-box">
+        #     <h4>Consistency Check</h4>
+        #     <p>Violin plots show the <strong>shape</strong> of satisfaction. A fat bottom means many unhappy customers. A fat top means distinct excellence.</p>
+        # </div>
+        # """, unsafe_allow_html=True)
 
-    #8 Rating vs. Category Page
-    elif page == "Rating vs. Category":
-        st.title("⭐ Rating vs. Category")
-        
-        fig_body_size = pf.plot_rating_vs_category(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Box plots show way more than just averages. For each category, you see the middle rating (median line), where most ratings fall (the box), and weird outliers (the dots).</p>
-            <p>Side by side layout lets you compare instantly. Dresses have a high box? Customers love them. Swimwear has a low box? Needs work.</p>
-            <p>This tells you where to focus. Low rated categories need improvement maybe it's quality, maybe it's sizing. High rated categories? Keep doing whatever you're doing there, maybe even expand those lines!</p>
-        </div>
-        """, unsafe_allow_html=True)
 
-    #9 Popularity Head/Tail Page
-    elif page == "Popularity Head/Tail":
-        st.title("🏷️ Popularity Head/Tail")
-        
-        fig_body_size = pf.plot_popularity_head_tail(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>The 80/20 rule in action usually 20% of your products get 80% of the attention. This chart shows you exactly which products are your stars (the "head") and which are just... there (the "tail").</p>
-            <p>Products are ranked from most to least popular, with a line showing cumulative impact. Different colors help you see the cutoff instantly.</p>
-            <p>Limited marketing budget? Focus on the head those are your money makers. The tail products might be worth cutting to free up resources, or maybe they're niche items worth keeping for specific customers. Now you actually know which is which.</p>
-        </div>
-        """, unsafe_allow_html=True)
 
-    #10 Category Breakdown Page
-    elif page == "Category Breakdown":
-        st.title("🏷️ Category Breakdown")
+    # 9 Ratings - Sentiment
+    elif page == "Sentiment & Review Text Analysis":
+        st.title("⭐ Sentiment & Review Text Analysis")
         
-        fig_body_size = pf.plot_category_breakdown(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
+        col1, col2 = st.columns(2)
         
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Bar charts answer "what chunk of my business is each category?" Your brain gets bars better than numbers, so seeing is more intuitive"</p>
-            <p>This shows your business mix on reviews. Are you mostly dresses reviews? Pretty balanced? If you say you're diversified but 60% is one category, that's risky if trends shift.</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    #12 Review Length vs. Rating Page
-    elif page == "Review Length vs. Rating":
-        st.title("⭐ Review Length vs. Rating")
-        
-        fig_body_size = pf.plot_review_length_vs_rating(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Do people write longer reviews when they're super happy or super mad? Each dot is a review length vs. star rating.</p>
-            <p>Colors show the rating, and trend lines help spot patterns. Usually both extremes (1 star and 5 star) inspire longer reviews people either want to rave or rant. The "meh" 3 star reviews? Usually short.</p>
-            <p>Why care? Longer reviews help future customers decide. If you're featuring reviews on product pages, prioritize the detailed ones. Also, super short 5 star reviews might be fake, so this helps catch suspicious patterns.</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    #13 Sentiment Polarity vs. Rating Page
-    elif page == "Sentiment Polarity vs. Rating":
-        st.title("⭐ Sentiment Polarity vs. Rating")
-        
-        fig_body_size = pf.plot_sentiment_polarity(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Does what people write match what they rate? We analyze if the review text is positive or negative, then compare to the star rating.</p>
-            <p>Dots near the diagonal line = perfect match (positive text + high stars). Dots far away = something weird (like "this is terrible" but 5 stars sarcasm? mistake?).</p>
-            <p>This shows you what's really going on beyond the stars. Sometimes people give 3 stars but their text is super positive they're just tough graders. Or you catch fake reviews that don't match up (paid review that says "great!" but accidentally clicked 1 star).</p>
-        </div>
-        """, unsafe_allow_html=True)
+        with col1:
+            st.header("Review Length vs. Rating")
+            fig_len = pf.plot_review_length_vs_rating(df)
+            st.plotly_chart(fig_len, use_container_width=True)
+            
+            st.markdown("""
+            <div class="info-box">
+                <h4>The "Rant vs. Rave" Curve</h4>
+                <p>Long reviews usually happen at extremes (1 Star Rants or 5 Star Love Letters). Short reviews in the middle often mean indifference.</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+        with col2:
+            st.header("Sentiment Polarity")
+            fig_sent = pf.plot_sentiment_polarity(df)
+            st.plotly_chart(fig_sent, use_container_width=True)
+            
+            st.markdown("""
+            <div class="info-box">
+                <h4>Text vs. Score Alignment</h4>
+                <p>Do the words match the stars? This helps identify:</p>
+                <ul>
+                    <li><strong>Sarcasm:</strong> 5 stars but negative words.</li>
+                    <li><strong>User Error:</strong> "Loved it!" but 1 star.</li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
 
 
 
 
 
-    #17 Rating Distribution Histogram Page
-    elif page == "Rating Distribution Histogram":
-        st.title("⭐ Rating Distribution Histogram")
-        
-        fig_body_size = pf.plot_rating_distribution_histogram(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>This shows the overall "mood" of your customers. Are most giving you 5 stars? 3 stars? 1 star? Lines for mean and median help you see the real picture.</p>
-            <p>The shape tells a story bell curve means most people are middle of the road. Skewed positive? Mostly happy customers. Two humps? People either love it or hate it, no in between.</p>
-            <p>Watch for weird patterns. Way too many 5 stars and nothing else? Might be fake reviews. Mostly 2 3 stars? You've got serious quality problems to fix.</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    #18 Rating Distribution (Bar Chart) Page
-    elif page == "Rating Distribution (Bar Chart)":
-        st.title("⭐ Rating Distribution (Bar Chart)")
-        
-        fig_body_size = pf.plot_rating_distribution(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Instead of grouping, this shows each star rating (1, 2, 3, 4, 5) as its own bar. You can see exactly how many 4 star vs 5 star reviews you have.</p>
-            <p>Colors go from red (1 star) to green (5 star) because nobody needs to be told stronger color = good and weaker color = bad. Your brain already knows.</p>
-            <p>Quick checks made easy: "Do we have more 5 stars or 1 stars?" "Are people mostly giving 3 stars?" Just look at the bar heights and you know instantly.</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    #19 Top Categories (Horizontal Bar Chart) Page
-    elif page == "Top Categories (Horizontal Bar Chart)":
-        st.title("🏷️ Top Categories (Horizontal Bar Chart)")
-        
-        fig_body_size = pf.plot_top_categories(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Horizontal bars work better with long category names (vertical would be cramped and diagonal). Ranking top to bottom makes it obvious which categories are your rockstars.</p>
-            <p>We only show the top ones because all 50+ categories would be overwhelming, and the tiny ones don't matter much anyway.</p>
-            <p>This tells you where to spend marketing money. Your top 3 5 categories are where customers are engaging, so that's where ads and new launches should focus. Don't spread yourself too thin.</p>
-        </div>
-        """, unsafe_allow_html=True)
 
 
 
-    #21 Hips vs. Waist Scatter Plot Page
-    elif page == "Hips vs. Waist Scatter Plot":
-        st.title("📏 Hips vs. Waist Scatter Plot")
-        
-        fig_body_size = pf.plot_body_measurements(df)
-        st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Shows hip vs. waist measurements. Each dot is a person. The pattern tells you about body shapes diagonal line means hourglass, clusters above = pear shaped, below = more rectangular.</p>
-            <p>Colors can show which body shapes get better fits super useful for understanding who your clothes work well for.</p>
-            <p>Why designers care: If you just scale a size 4 up to make a size 10, you're assuming everyone has the same proportions they don't! This shows the variety of shapes you need to accommodate. Larger sizes might need proportionally more room in hips, not just bigger everywhere.</p>
-        </div>
-        """, unsafe_allow_html=True)
+
+
+
+
+
+
 
     #22 Parallel Categories Diagram Page
     elif page == "Parallel Categories Diagram":
@@ -588,37 +546,20 @@ if df is not None:
         </div>
         """, unsafe_allow_html=True)
 
-    #24 Quality Violin Plot Page
-    elif page == "Quality Violin Plot":
-        st.title("⭐ Quality Violin Plot (TOP 10)")
-        
-        fig_body_size = pf.plot_quality_violin(df)
+    # Popularity & Categories Re-inserted (Lost in overwrite)
+    elif page == "Popularity Head/Tail":
+        st.title("🏷️ Popularity Head/Tail")
+        fig_body_size = pf.plot_popularity_head_tail(df)
         st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>Violin plots are like box plots on steroids they show the full shape of your data distribution, not just the summary stats. You can see if ratings are clustered or spread out.</p>
-            <p>The symmetrical shape with embedded box plot gives you both detailed distribution AND quick summaries (median, quartiles).</p>
-            <p>This reveals if ratings are polarized (two humps people either love or hate) or consensus driven (one hump everyone kinda agrees). Totally different situations that need different fixes.</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown('<div class="info-box"><h4>The 80/20 Rule</h4><p>Identify your "Star" products vs. the "Tail".</p></div>', unsafe_allow_html=True)
 
-    #25 Body Shape Analyzer (Interactive Histogram) Page
-    elif page == "Body Shape Analyzer (Interactive Histogram)":
-        st.title("📏 Body Shape Analyzer (Interactive Histogram)")
-        
-        fig_body_size = pf.plot_body_shape_analyzer(df)
+    elif page == "Category Breakdown":
+        st.title("🏷️ Category Breakdown")
+        fig_body_size = pf.plot_category_breakdown(df)
         st.plotly_chart(fig_body_size, use_container_width=True)
-        
-        st.markdown("""
-        <div style="background-color: #f0f2f6; padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <h4 style="color: #1f77b4; margin-top: 0;">💡 What's this about?</h4>
-            <p>CHOOOOOOSE YOUR OPTION IN THE FILTER: You can interact with this to explore measurement distributions. Like "show me customers with bust 34 36 AND waist 26 28" the chart updates live.</p>
-            <p>Interactive filtering lets you dig into specific segments without creating a million separate charts.</p>
-            <p>This helps merchandisers define precise customer segments, find underserved size combinations, and test ideas about sizing by exploring the actual data instead of guessing.</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown('<div class="info-box"><h4>Business Mix</h4><p>Understand your portfolio composition.</p></div>', unsafe_allow_html=True)
+
+
 
 
 
