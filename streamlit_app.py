@@ -526,6 +526,59 @@ if df is not None:
 
 
 
+    # 10 Product & Category - Performance
+    elif page == "Category Performance & Share":
+        st.title("🏷️ Category Performance & Share")
+        
+        st.header("Category Volume Breakdown")
+        fig_bar = pf.plot_category_breakdown(df)
+        st.plotly_chart(fig_bar, use_container_width=True)
+        
+        st.markdown("""
+        <div class="info-box">
+            <h4>Inventory Dominance</h4>
+            <p>Which categories make up the bulk of your catalog? This chart shows raw volume.</p>
+            <p><strong>Strategic Check:</strong> If "Tops" are 50% of your inventory but only 20% of your revenue (not shown here, but implied by low ratings/engagement), you are over-indexed.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        
+        st.header("Category Share Tree Map")
+        fig_tree = pf.plot_category_treemap(df)
+        st.plotly_chart(fig_tree, use_container_width=True)
+        
+        st.markdown("""
+        <div class="info-box">
+            <h4>The "Big Picture" View</h4>
+            <p><strong>Size = Popularity (Review Count)</strong></p>
+            <p><strong>Color = Quality (Avg Rating)</strong></p>
+            <p>Look for <strong>Big Dark Blue Boxes</strong>. These are your "Cash Cows" (High volume, high quality). Protect them at all costs.</p>
+            <p>Look for <strong>Big Red/Light Blue Boxes</strong>. These are "Trouble Makers" (High volume, low quality). These are destroying your brand reputation at scale.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # 11 Product & Category - Strategy
+    elif page == "Portfolio Strategy (BCG Matrix)":
+        st.title("🏷️ Portfolio Strategy (BCG Matrix)")
+        
+        st.header("Quality vs. Popularity Matrix")
+        fig_matrix = pf.plot_quality_popularity_matrix(df)
+        st.plotly_chart(fig_matrix, use_container_width=True)
+        
+        st.markdown("""
+        <div class="info-box">
+            <h4>Strategic Quadrants</h4>
+            <p>We classify every category into 4 strategic buckets:</p>
+            <ul>
+                <li><strong>🌟 Stars (Top Right):</strong> High Rating, High Volume. Expand these lines.</li>
+                <li><strong>❓ Question Marks (Top Left):</strong> High Rating, Low Volume. Marketing opportunity! These act like hidden gems.</li>
+                <li><strong>🐄 Cash Cows (Bottom Right):</strong> Low Rating, High Volume. Dangerous. You are selling a lot of mediocre stuff. Improve quality or risk churn.</li>
+                <li><strong>🐕 Pets (Bottom Left):</strong> Low Rating, Low Volume. Kill these lines. They waste resources.</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
     # 12 Advanced Analytics - Deep Dive
     elif page == "Deep Dive Maps":
         st.title("🔍 Advanced Analytics: Deep Dive Maps")
