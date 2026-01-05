@@ -2,7 +2,13 @@
 
 ## 📊 Dashboard link: https://mod-cloth-dashboard.streamlit.app/
 
+---
 
+## 📈 Visual Preview
+
+![Dashboard Overview](assets/Screenshot.png)
+
+---
 
 [![Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://mod-cloth-dashboard.streamlit.app/)
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/)
@@ -93,16 +99,6 @@ The `clean_datset()` function demonstrates robust data engineering:
     ```bash
     streamlit run streamlit_app.py
     ```
-
----
-
-## 📈 Visual Preview
-
-*(Placeholder for Screenshots - Recommended: meaningful captions for each)*
-
-| **Fit Analysis** | **Body Shape Clustering** |
-|:---:|:---:|
-| *Identifying categories with high return risks* | *Segmenting customers by real body observations* |
 
 ---
 
